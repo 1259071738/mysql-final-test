@@ -183,12 +183,66 @@ mysql> select*from biao where comm<100;
 
 
 3.5 计算每个人的收入(ename, sal + comm)；计算总共有多少人；计算所有人的平均收入。 提示：计算时 NULL 要当做 0 处理； 
-
+~~~sql
+mysql> select ename,sal+comm,count(ename) counts,AVG(sal+comm) average_sal_comm from biao;
++-------+----------+--------+------------------+
+| ename | sal+comm | counts | average_sal_comm |
++-------+----------+--------+------------------+
+| SMITH |     NULL |     14 |             1950 |
++-------+----------+--------+------------------+
+1 row in set (0.01 sec)
+~~~
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
+~~~sql
+mysql> select t1.ename My_b_b_name,t2.ename My_b_name ,t3.ename My_name
+    -> from (biao t1 inner join biao t2 on t1. empno= t2. mgr)  inner join biao t3
+    -> on t2.empno = t3.mgr;
++-------------+-----------+---------+
+| My_b_b_name | My_b_name | My_name |
++-------------+-----------+---------+
+| JONES       | FORD      | SMITH   |
+| KING        | BLAKE     | ALLEN   |
+| KING        | BLAKE     | WARD    |
+| KING        | BLAKE     | MARTIN  |
+| KING        | JONES     | SCOTT   |
+| JONES       | SCOTT     | ADAMS   |
+| KING        | BLAKE     | JAMES   |
+| KING        | JONES     | FORD    |
++-------------+-----------+---------+
+8 rows in set (0.05 sec)
+~~~
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。
+~~~sql
+mysql> select * from biao1 t1 inner join biao t2 on t1.deptno=t2.deptno;
++--------+------------+----------+--------+----------+----------+-----------+------+------------+------+------+
+| deptno | dname      | loc      | deptno | empno    | ename    | job       | MGR  | Hiredate   | sal  | comm |
++--------+------------+----------+--------+----------+----------+-----------+------+------------+------+------+
+|     20 | RESEARCH   | DALLAS   |     20 |     7369 | SMITH    | CLERK     | 7902 | 1981-03-12 |  800 | NULL |
+|     30 | SALES      | CHICAGO  |     30 |     7499 | ALLEN    | SALESMAN  | 7698 | 1982-03-12 | 1600 |  300 |
+|     30 | SALES      | CHICAGO  |     30 |     7521 | WARD     | SALESMAN  | 7698 | 1838-03-12 | 1250 |  500 |
+|     20 | RESEARCH   | DALLAS   |     20 |     7566 | JONES    | MANAGER   | 7839 | 1981-03-12 | 2975 | NULL |
+|     30 | SALES      | CHICAGO  |     30 |     7654 | MARTIN   | SALESMAN  | 7698 | 1981-01-12 | 1250 | 1400 |
+|     10 | ACCOUNTING | NEW YORK |     10 |     7698 | BLAKE    | MANAGER   | 7839 | 1985-03-12 | 2450 | NULL |
+|     20 | RESEARCH   | DALLAS   |     20 |     7788 | SCOTT    | ANALYST   | 7566 | 1981-03-12 | 3000 | NULL |
+|     10 | ACCOUNTING | NEW YORK |     10 |     7839 | KING     | PRESIDENT | NULL | 1981-03-12 | 5000 | NULL |
+|     30 | SALES      | CHICAGO  |     30 |     7844 | TURNER   | SALESMAN  | 7689 | 1981-03-12 | 1500 |    0 |
+|     20 | RESEARCH   | DALLAS   |     20 |     7878 | ADAMS    | CLERK     | 7788 | 1981-03-12 | 1100 | NULL |
+|     30 | SALES      | CHICAGO  |     30 |     7900 | JAMES    | CLERK     | 7698 | 1981-03-12 |  950 | NULL |
+|     20 | RESEARCH   | DALLAS   |     20 |     7902 | FORD     | ANALYST   | 7566 | 1981-03-12 | 3000 | NULL |
+|     10 | ACCOUNTING | NEW YORK |     10 |     7934 | MILLER   | CLERK     | 7782 | 1981-03-12 | 1300 |  100 |
+|     10 | ACCOUNTING | NEW YORK |     10 | 17061518 | liufeihu | std       |  219 | 1998-02-19 | NULL | NULL |
++--------+------------+----------+--------+----------+----------+-----------+------+------------+------+------+
+14 rows in set (0.00 sec)
+
+mysql> create view biao3
+    -> as
+    -> select empno,ename,job,loc from biao1 t1 inner join biao t2 on t1.deptno=t2.deptno;
+Query OK, 0 rows affected (0.14 sec)
+~~~
 
 3.8 为表2增加一个约束：deptno字段需要在表1中存在；这称做什么完整性？
+
 
 3.9 为表2增加一个索引：ename 字段。简述为什么要在 ename 字段建立索引
 
@@ -202,13 +256,6 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
-~~~sql
-mysql> CREATE FUNCTION get_deptno_from_empno()
-    -> RETURNS int(8)
-    -> RETURN
-    -> (SELECT deptno FROM biao
-    -> WHERE empno=biao2.empno);
-~~~
 
 
 4 建立一个新用户，账号为自己的姓名拼音，密码为自己的学号；
