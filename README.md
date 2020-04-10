@@ -136,10 +136,36 @@ mysql> INSERT INTO biao(empno, ename, job, MGR, Hiredate, sal, comm, deptno)
 Query OK, 1 row affected (0.14 sec)
 ~~~
 3.2 表中入职时间（Hiredate字段）最短的人。
+~~~sql
+mysql> select*from biao where Hiredate =(select max(Hiredate) from biao);
++--------+----------+----------+------+------+------------+------+------+
+| deptno | empno    | ename    | job  | MGR  | Hiredate   | sal  | comm |
++--------+----------+----------+------+------+------------+------+------+
+|     10 | 17061518 | liufeihu | std  |  219 | 1998-02-19 | NULL | NULL |
++--------+----------+----------+------+------+------------+------+------+
+1 row in set (0.17 sec)
+~~~
 
 3.3 有几种职位（job字段）？在关系代数中，本操作是什么运算？
 
+~~~sql
+mysql> select distinct job from biao;
++-----------+
+| job       |
++-----------+
+| CLERK     |
+| SALESMAN  |
+| MANAGER   |
+| ANALYST   |
+| PRESIDENT |
+| std       |
++-----------+
+6 rows in set (0.14 sec)
+~~~
+由运行结果可以看到，这次查询结果返回了6条记录的 age 值，且没有重复的值.
+
 3.4 将 MILLER 的 comm 增加 100； 然后，找到 comm 比 MILLER 低的人；
+
 
 3.5 计算每个人的收入(ename, sal + comm)；计算总共有多少人；计算所有人的平均收入。 提示：计算时 NULL 要当做 0 处理； 
 
