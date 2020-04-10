@@ -30,6 +30,15 @@ mysql> select now();
 
 (例如 张三+123456 或者 zhangsan+123456 显示需包含加号)，写出SQL语句和结果
 
+~~~sql
+mysql> select concat("刘飞虎+",17061518);
++-------------------------------+
+| concat("刘飞虎+",17061518)    |
++-------------------------------+
+| 刘飞虎+17061518               |
++-------------------------------+
+1 row in set (0.13 sec)
+~~~
 
 3 建立如下表1和表2，写出建表语句和插入语句。
 
@@ -41,6 +50,27 @@ deptno, deptno,    loc
 (30, "SALES", "CHICAGO"),
 (40, "OPERATIONS", "BOSTON")
 ```
+
+~~~sql
+mysql> create database text_db;
+Query OK, 1 row affected (0.20 sec)
+
+mysql> use text_db;
+Database changed
+mysql> create table biao1
+    -> (
+    -> deptno int(10) primary key,
+    -> dname varchar(25),
+    -> loc varchar(25)
+    -> );
+Query OK, 0 rows affected (1.53 sec)
+
+mysql> insert into biao1
+    -> (deptno,dname,loc)
+    -> values(10,'ACCOUNTING','NEW YORK'),(20,'RESEARCH','DALLAS'),(30,'SALES','CHICAGO'),(40,'OPERATIONS','BOSTON');
+Query OK, 4 rows affected (0.11 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+~~~
 
 表2：其中empno字段为主键
 ```
@@ -60,12 +90,51 @@ deptno, deptno,    loc
 	(7934, "MILLER", "CLERK", 7782, "1981-03-12", 1300, NULL, 10)
 ```
 
+~~~sql
+mysql> use text_db;
+Database changed
+mysql> create table biao
+    -> (
+    -> deptno INT NOT NULL,
+    -> empno INT  PRIMARY KEY,
+    -> ename VARCHAR(20),
+    -> job  VARCHAR(20),
+    ->     MGR  INT,
+    -> Hiredate Date,
+    -> sal float,
+    -> comm float
+    -> );
+Query OK, 0 rows affected (0.48 sec)
+mysql> INSERT INTO biao(empno, ename, job, MGR, Hiredate, sal, comm, deptno)
+    -> values(7369, "SMITH", "CLERK", 7902, "1981-03-12", 800.00, NULL, 20),
+    -> (7499, "ALLEN", "SALESMAN", 7698, "1982-03-12", 1600, 300, 30),
+    -> (7521, "WARD", "SALESMAN", 7698, "1838-03-12", 1250, 500, 30),
+    -> (7566, "JONES", "MANAGER", 7839, "1981-03-12", 2975, NULL, 20),
+    -> (7654, "MARTIN", "SALESMAN", 7698, "1981-01-12", 1250, 1400, 30),
+    -> (7698, "BLAKE", "MANAGER", 7839, "1985-03-12", 2450, NULL, 10),
+    -> (7788, "SCOTT", "ANALYST", 7566, "1981-03-12", 3000, NULL, 20),
+    -> (7839, "KING", "PRESIDENT", NULL, "1981-03-12", 5000, NULL, 10),
+    -> (7844, "TURNER", "SALESMAN", 7689, "1981-03-12", 1500, 0, 30),
+    -> (7878, "ADAMS", "CLERK", 7788, "1981-03-12", 1100, NULL,20),
+    -> (7900, "JAMES", "CLERK", 7698,"1981-03-12",  950, NULL, 30),
+    -> (7902, "FORD", "ANALYST", 7566, "1981-03-12", 3000, NULL, 20),
+    -> (7934, "MILLER", "CLERK", 7782, "1981-03-12", 1300, NULL, 10)
+    -> ;
+Query OK, 13 rows affected (0.17 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+~~~
+
 3.1 表2 中再插入一条记录：
 
 `(你的学号，你的姓名或者拼音， “CLERK”, 7782, 你的生日,  NULL, NULL, 10)`
  
 例如：`(12345,  "Zhangsan", "sTUDENT", 7782, "2000-03-12", NULL, NULL, 10)`
 
+~~~sql
+mysql> INSERT INTO biao(empno, ename, job, MGR, Hiredate, sal, comm, deptno)
+    -> values(17061518,"liufeihu","std",0219,"1998-02-19",null,null,10);
+Query OK, 1 row affected (0.14 sec)
+~~~
 3.2 表中入职时间（Hiredate字段）最短的人。
 
 3.3 有几种职位（job字段）？在关系代数中，本操作是什么运算？
