@@ -193,9 +193,23 @@ mysql> select*from biao where comm<100;
 3.9 为表2增加一个索引：ename 字段。简述为什么要在 ename 字段建立索引
 
 3.10 将表2的 sal 字段改名为 salary
+~~~sql
+mysql> ALTER TABLE biao
+    -> CHANGE sal salary float;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+~~~
 
 
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
+~~~sql
+mysql> CREATE FUNCTION get_deptno_from_empno()
+    -> RETURNS int(8)
+    -> RETURN
+    -> (SELECT deptno FROM biao
+    -> WHERE empno=biao2.empno);
+~~~
+
 
 4 建立一个新用户，账号为自己的姓名拼音，密码为自己的学号；
 ~~~sql
