@@ -165,6 +165,21 @@ mysql> select distinct job from biao;
 由运行结果可以看到，这次查询结果返回了6条记录的 age 值，且没有重复的值.
 
 3.4 将 MILLER 的 comm 增加 100； 然后，找到 comm 比 MILLER 低的人；
+~~~sql
+mysql> update biao
+    -> set comm=100
+    -> where empno=7934;
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from biao where comm<100;
++--------+-------+--------+----------+------+------------+------+------+
+| deptno | empno | ename  | job      | MGR  | Hiredate   | sal  | comm |
++--------+-------+--------+----------+------+------------+------+------+
+|     30 |  7844 | TURNER | SALESMAN | 7689 | 1981-03-12 | 1500 |    0 |
++--------+-------+--------+----------+------+------------+------+------+
+1 row in set (0.01 sec)
+~~~
 
 
 3.5 计算每个人的收入(ename, sal + comm)；计算总共有多少人；计算所有人的平均收入。 提示：计算时 NULL 要当做 0 处理； 
