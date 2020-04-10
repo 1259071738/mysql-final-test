@@ -179,6 +179,7 @@ mysql> select distinct job from biao;
 
 3.10 将表2的 sal 字段改名为 salary
 
+
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
 
 4 建立一个新用户，账号为自己的姓名拼音，密码为自己的学号；
